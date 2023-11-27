@@ -33,14 +33,14 @@ jobs:
           env:
               NEW_VERSION: ${{ steps.version.outputs.version }}
           run: |
-            docker build -t edwalrd/graphql:1.1.0 .
+            docker build -t edwalrd/graphql:$NEW_VERSION .
             docker build -t edwalrd/graphql:latest .
       
         - name: Push Docker Image
           env:
               NEW_VERSION: ${{ steps.version.outputs.version }}
           run: |
-            docker push edwalrd/graphql:1.1.0
+            docker push edwalrd/graphql:$NEW_VERSION
             docker push edwalrd/graphql:latest
 
 
