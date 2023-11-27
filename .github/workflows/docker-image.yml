@@ -41,6 +41,6 @@ jobs:
               NEW_VERSION: ${{ steps.version.outputs.version }}
           run: |
             docker push edwalrd/graphql:1.1.0
-            docker push edwalrd/graphqlgraphql:latest
+            docker push edwalrd/graphql:latest
 
 
