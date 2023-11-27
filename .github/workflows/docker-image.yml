@@ -20,14 +20,27 @@ jobs:
           with:
               major_pattern: "major:"
               minor_pattern: "feat:"
-              format: "${major}.${minor}"
+              format: "${major}.${minor}.${patch}-prerelease${increment}"
               id: version
 
-        - name: Show Version
+        - name: Docker Login
+          env:
+              DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+              DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+          run: docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+
+        - name: Build Docker Image
           env:
               NEW_VERSION: ${{ steps.version.outputs.version }}
-          run: | 
-              echo "$NEW_VERSION"
+          run: |
+            docker build -t edwalrd/docker-graphql:$NEW_VERSION .
+            docker build -t edwalrd/docker-graphql:latest .
+      
+        - name: Push Docker Image
+          env:
+              NEW_VERSION: ${{ steps.version.outputs.version }}
+          run: |
+            docker push edwalrd/docker-graphql:$NEW_VERSION
+            docker push edwalrd/docker-graphql:latest
 
-       
 
